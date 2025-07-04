@@ -122,9 +122,25 @@ function animateSkills() {
     const progressBars = document.querySelectorAll('.progress-bar');
     
     progressBars.forEach((bar, index) => {
-        const progress = bar.getAttribute('data-progress');
+        const progress = parseInt(bar.getAttribute('data-progress'));
+        const skillCard = bar.closest('.skill-card');
+        const percentage = skillCard.querySelector('.skill-percentage');
+        
         setTimeout(() => {
+            // Animate the progress bar
             bar.style.width = progress + '%';
+            
+            // Animate the percentage counter
+            let currentProgress = 0;
+            const increment = progress / 60; // 60 frames for smooth animation
+            const counter = setInterval(() => {
+                currentProgress += increment;
+                if (currentProgress >= progress) {
+                    currentProgress = progress;
+                    clearInterval(counter);
+                }
+                percentage.textContent = Math.round(currentProgress) + '%';
+            }, 25);
         }, index * 200);
     });
 }
@@ -301,43 +317,10 @@ function debounce(func, wait) {
     };
 }
 
-// Add loading animation
+// Simplified page load handler
 window.addEventListener('load', () => {
-    const loader = document.createElement('div');
-    loader.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: white;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 1;
-        transition: opacity 0.5s ease;
-    `;
-    
-    loader.innerHTML = `
-        <div style="
-            width: 50px;
-            height: 50px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        "></div>
-    `;
-
-    document.body.appendChild(loader);
-
-    setTimeout(() => {
-        loader.style.opacity = '0';
-        setTimeout(() => {
-            loader.remove();
-        }, 500);
-    }, 1000);
+    // Page is fully loaded
+    document.body.classList.add('loaded');
 });
 
 // Add CSS for animations
