@@ -344,3 +344,15 @@ document.head.appendChild(style);
 
 // Export functions for global use
 window.scrollToSection = scrollToSection;
+
+
+
+
+
+
+
+
+
+
+
+
